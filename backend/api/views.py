@@ -85,7 +85,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
         recipe_id = self.kwargs.get("pk")
         user = request.user
         if request.method == "POST":
-            if ShoppingCart.objects.filter(user=user, recipe__id=recipe_id).exists():
+            if ShoppingCart.objects.filter(
+                user=user, recipe__id=recipe_id
+            ).exists():
                 return Response(
                     {"errors": "Рецепт уже добавлен!"},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -95,7 +97,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer = RecipeSerializer(recipe)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            instance = get_object_or_404(ShoppingCart, user=user, recipe__id=recipe_id)
+            instance = get_object_or_404(
+                ShoppingCart, user=user, recipe__id=recipe_id)
             instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -107,7 +110,9 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         user_name = f"{user.first_name.title()}_" f"{user.last_name.title()}"
         ingredients = (
-            IngredientInRecipe.objects.filter(recipe__shopping_cart__user=user)
+            IngredientInRecipe.objects.filter(
+                recipe__shopping_cart__user=user
+            )
             .values("ingredient__name", "ingredient__measurement_unit")
             .annotate(amount=Sum("amount"))
         )
@@ -173,9 +178,12 @@ class UsersViewSet(DjoserUserViewSet):
         if request.method == "POST":
             if author == self.request.user:
                 raise SelfSubscribeError
-            elif Subscribes.objects.filter(author=author, user=request.user).exists():
+            elif Subscribes.objects.filter(
+                author=author, user=request.user
+            ).exists():
                 return Response(
-                    {"errors": "Вы уже подписаны!"}, status=status.HTTP_400_BAD_REQUEST
+                    {"errors": "Вы уже подписаны!"},
+                    status=status.HTTP_400_BAD_REQUEST
                 )
             Subscribes.objects.create(author=author, user=self.request.user)
             queryset = User.objects.filter(username=author)
@@ -184,6 +192,7 @@ class UsersViewSet(DjoserUserViewSet):
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            instance = get_object_or_404(Subscribes, author=author, user=request.user)
+            instance = get_object_or_404(
+                Subscribes, author=author, user=request.user)
             instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

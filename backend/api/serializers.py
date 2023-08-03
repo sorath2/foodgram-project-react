@@ -30,7 +30,14 @@ class UsersSerializer(UserSerializer):
 
     class Meta:
         model = User
-        fields = ["email", "id", "username", "first_name", "last_name", "is_subscribed"]
+        fields = [
+            "email",
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+            "is_subscribed"
+        ]
 
     def get_is_subscribed(self, obj):
         """Проверка подписки"""
@@ -46,7 +53,8 @@ class UsersCreateSerializer(UserSerializer):
     username = serializers.CharField(
         max_length=150,
         required=True,
-        validators=[UniqueValidator(queryset=User.objects.all()), validate_username],
+        validators=[UniqueValidator(
+            queryset=User.objects.all()), validate_username],
     )
 
     email = serializers.EmailField(
@@ -129,7 +137,8 @@ class RecipeReadSerializer(serializers.ModelSerializer):
 
     def get_ingredients(self, obj):
         ingredients = obj.ingredients.values(
-            "id", "name", "measurement_unit", amount=F("ingredient_in_recipe__amount")
+            "id", "name", "measurement_unit",
+            amount=F("ingredient_in_recipe__amount")
         )
         return ingredients
 
@@ -151,7 +160,8 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
 
     author = serializers.CharField(default=serializers.CurrentUserDefault())
     image = Base64ImageField(required=True)
-    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
+    tags = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Tag.objects.all())
     ingredients = IngredientInRecipeSerializer(many=True)
 
     class Meta:
@@ -218,8 +228,10 @@ class SubscribesSerializer(UsersSerializer):
     recipes_count = serializers.SerializerMethodField()
     email = serializers.EmailField(default=serializers.CurrentUserDefault())
     username = serializers.SlugField(default=serializers.CurrentUserDefault())
-    first_name = serializers.SlugField(default=serializers.CurrentUserDefault())
-    last_name = serializers.SlugField(default=serializers.CurrentUserDefault())
+    first_name = serializers.SlugField(
+        default=serializers.CurrentUserDefault())
+    last_name = serializers.SlugField(
+        default=serializers.CurrentUserDefault())
 
     class Meta:
         model = User
@@ -247,7 +259,8 @@ class SubscribesSerializer(UsersSerializer):
         recipes = obj.recipes.all()
         if limit:
             if not (limit.isdigit()):
-                raise ValidationError({"recipes_limit": "Может быть только числом!"})
+                raise ValidationError(
+                    {"recipes_limit": "Может быть только числом!"})
             recipes = recipes[: int(limit)]
         serializer = RecipeSerializer(recipes, many=True, read_only=True)
         return serializer.data

@@ -1,37 +1,5 @@
 [
     {
-        "label": "admin",
-        "importPath": "django.contrib",
-        "description": "django.contrib",
-        "isExtraImport": true,
-        "detail": "django.contrib",
-        "documentation": {}
-    },
-    {
-        "label": "admin",
-        "importPath": "django.contrib",
-        "description": "django.contrib",
-        "isExtraImport": true,
-        "detail": "django.contrib",
-        "documentation": {}
-    },
-    {
-        "label": "admin",
-        "importPath": "django.contrib",
-        "description": "django.contrib",
-        "isExtraImport": true,
-        "detail": "django.contrib",
-        "documentation": {}
-    },
-    {
-        "label": "admin",
-        "importPath": "django.contrib",
-        "description": "django.contrib",
-        "isExtraImport": true,
-        "detail": "django.contrib",
-        "documentation": {}
-    },
-    {
         "label": "AppConfig",
         "importPath": "django.apps",
         "description": "django.apps",
@@ -377,30 +345,6 @@
         "documentation": {}
     },
     {
-        "label": "TestCase",
-        "importPath": "django.test",
-        "description": "django.test",
-        "isExtraImport": true,
-        "detail": "django.test",
-        "documentation": {}
-    },
-    {
-        "label": "TestCase",
-        "importPath": "django.test",
-        "description": "django.test",
-        "isExtraImport": true,
-        "detail": "django.test",
-        "documentation": {}
-    },
-    {
-        "label": "TestCase",
-        "importPath": "django.test",
-        "description": "django.test",
-        "isExtraImport": true,
-        "detail": "django.test",
-        "documentation": {}
-    },
-    {
         "label": "include",
         "importPath": "django.urls",
         "description": "django.urls",
@@ -619,14 +563,6 @@
         "documentation": {}
     },
     {
-        "label": "timedelta",
-        "importPath": "datetime",
-        "description": "datetime",
-        "isExtraImport": true,
-        "detail": "datetime",
-        "documentation": {}
-    },
-    {
         "label": "Path",
         "importPath": "pathlib",
         "description": "pathlib",
@@ -640,6 +576,30 @@
         "description": "django.conf",
         "isExtraImport": true,
         "detail": "django.conf",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
+        "documentation": {}
+    },
+    {
+        "label": "admin",
+        "importPath": "django.contrib",
+        "description": "django.contrib",
+        "isExtraImport": true,
+        "detail": "django.contrib",
         "documentation": {}
     },
     {
@@ -667,27 +627,19 @@
         "documentation": {}
     },
     {
-        "label": "render",
-        "importPath": "django.shortcuts",
-        "description": "django.shortcuts",
-        "isExtraImport": true,
-        "detail": "django.shortcuts",
-        "documentation": {}
-    },
-    {
-        "label": "render",
-        "importPath": "django.shortcuts",
-        "description": "django.shortcuts",
-        "isExtraImport": true,
-        "detail": "django.shortcuts",
-        "documentation": {}
-    },
-    {
         "label": "AbstractUser",
         "importPath": "django.contrib.auth.models",
         "description": "django.contrib.auth.models",
         "isExtraImport": true,
         "detail": "django.contrib.auth.models",
+        "documentation": {}
+    },
+    {
+        "label": "TestCase",
+        "importPath": "django.test",
+        "description": "django.test",
+        "isExtraImport": true,
+        "detail": "django.test",
         "documentation": {}
     },
     {
@@ -739,7 +691,7 @@
         "kind": 6,
         "importPath": "backend.api.filters",
         "description": "backend.api.filters",
-        "peekOfCode": "class RecipeFilter(FilterSet):\n    tags = filters.ModelMultipleChoiceFilter(\n        field_name=\"tags__slug\",\n        to_field_name=\"slug\",\n        queryset=Tag.objects.all(),\n    )\n    is_favorited = filters.BooleanFilter(method=\"filter_is_favorited\")\n    is_in_shopping_cart = filters.BooleanFilter(method=\"filter_is_in_shopping_cart\")\n    class Meta:\n        model = Recipe",
+        "peekOfCode": "class RecipeFilter(FilterSet):\n    tags = filters.ModelMultipleChoiceFilter(\n        field_name=\"tags__slug\",\n        to_field_name=\"slug\",\n        queryset=Tag.objects.all(),\n    )\n    is_favorited = filters.BooleanFilter(method=\"filter_is_favorited\")\n    is_in_shopping_cart = filters.BooleanFilter(\n        method=\"filter_is_in_shopping_cart\"\n    )",
         "detail": "backend.api.filters",
         "documentation": {}
     },
@@ -784,7 +736,7 @@
         "kind": 6,
         "importPath": "backend.api.serializers",
         "description": "backend.api.serializers",
-        "peekOfCode": "class UsersSerializer(UserSerializer):\n    \"\"\"Сериализация пользователей\"\"\"\n    is_subscribed = serializers.SerializerMethodField()\n    class Meta:\n        model = User\n        fields = [\"email\", \"id\", \"username\", \"first_name\", \"last_name\", \"is_subscribed\"]\n    def get_is_subscribed(self, obj):\n        \"\"\"Проверка подписки\"\"\"\n        user = self.context.get(\"request\").user\n        if user.is_anonymous:",
+        "peekOfCode": "class UsersSerializer(UserSerializer):\n    \"\"\"Сериализация пользователей\"\"\"\n    is_subscribed = serializers.SerializerMethodField()\n    class Meta:\n        model = User\n        fields = [\n            \"email\",\n            \"id\",\n            \"username\",\n            \"first_name\",",
         "detail": "backend.api.serializers",
         "documentation": {}
     },
@@ -793,7 +745,7 @@
         "kind": 6,
         "importPath": "backend.api.serializers",
         "description": "backend.api.serializers",
-        "peekOfCode": "class UsersCreateSerializer(UserSerializer):\n    \"\"\"Сериализация создания пользователей\"\"\"\n    username = serializers.CharField(\n        max_length=150,\n        required=True,\n        validators=[UniqueValidator(queryset=User.objects.all()), validate_username],\n    )\n    email = serializers.EmailField(\n        max_length=254,\n        required=True,",
+        "peekOfCode": "class UsersCreateSerializer(UserSerializer):\n    \"\"\"Сериализация создания пользователей\"\"\"\n    username = serializers.CharField(\n        max_length=150,\n        required=True,\n        validators=[UniqueValidator(\n            queryset=User.objects.all()), validate_username],\n    )\n    email = serializers.EmailField(\n        max_length=254,",
         "detail": "backend.api.serializers",
         "documentation": {}
     },
@@ -847,7 +799,7 @@
         "kind": 6,
         "importPath": "backend.api.serializers",
         "description": "backend.api.serializers",
-        "peekOfCode": "class RecipeWriteSerializer(serializers.ModelSerializer):\n    \"\"\"Сериализация создания рецепта\"\"\"\n    author = serializers.CharField(default=serializers.CurrentUserDefault())\n    image = Base64ImageField(required=True)\n    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())\n    ingredients = IngredientInRecipeSerializer(many=True)\n    class Meta:\n        model = Recipe\n        fields = [\n            \"id\",",
+        "peekOfCode": "class RecipeWriteSerializer(serializers.ModelSerializer):\n    \"\"\"Сериализация создания рецепта\"\"\"\n    author = serializers.CharField(default=serializers.CurrentUserDefault())\n    image = Base64ImageField(required=True)\n    tags = serializers.PrimaryKeyRelatedField(\n        many=True, queryset=Tag.objects.all())\n    ingredients = IngredientInRecipeSerializer(many=True)\n    class Meta:\n        model = Recipe\n        fields = [",
         "detail": "backend.api.serializers",
         "documentation": {}
     },
@@ -856,7 +808,7 @@
         "kind": 6,
         "importPath": "backend.api.serializers",
         "description": "backend.api.serializers",
-        "peekOfCode": "class SubscribesSerializer(UsersSerializer):\n    \"\"\"Сериализация подписок\"\"\"\n    is_subscribed = serializers.SerializerMethodField()\n    recipes = serializers.SerializerMethodField()\n    recipes_count = serializers.SerializerMethodField()\n    email = serializers.EmailField(default=serializers.CurrentUserDefault())\n    username = serializers.SlugField(default=serializers.CurrentUserDefault())\n    first_name = serializers.SlugField(default=serializers.CurrentUserDefault())\n    last_name = serializers.SlugField(default=serializers.CurrentUserDefault())\n    class Meta:",
+        "peekOfCode": "class SubscribesSerializer(UsersSerializer):\n    \"\"\"Сериализация подписок\"\"\"\n    is_subscribed = serializers.SerializerMethodField()\n    recipes = serializers.SerializerMethodField()\n    recipes_count = serializers.SerializerMethodField()\n    email = serializers.EmailField(default=serializers.CurrentUserDefault())\n    username = serializers.SlugField(default=serializers.CurrentUserDefault())\n    first_name = serializers.SlugField(\n        default=serializers.CurrentUserDefault())\n    last_name = serializers.SlugField(",
         "detail": "backend.api.serializers",
         "documentation": {}
     },
@@ -1207,7 +1159,7 @@
         "kind": 5,
         "importPath": "backend.foodgram_backend.urls",
         "description": "backend.foodgram_backend.urls",
-        "peekOfCode": "urlpatterns = [\n    path(\"admin/\", admin.site.urls),\n    path(\"api/\", include(\"api.urls\")),\n]\nif settings.DEBUG:\n    import debug_toolbar\n    urlpatterns += (path(\"__debug__/\", include(debug_toolbar.urls)),)",
+        "peekOfCode": "urlpatterns = [\n    path(\"admin/\", admin.site.urls),\n    path(\"api/\", include(\"api.urls\")),\n]",
         "detail": "backend.foodgram_backend.urls",
         "documentation": {}
     },
@@ -1324,7 +1276,7 @@
         "kind": 6,
         "importPath": "backend.recipes.models",
         "description": "backend.recipes.models",
-        "peekOfCode": "class IngredientInRecipe(models.Model):\n    recipe = models.ForeignKey(\n        Recipe, verbose_name=\"Рецепт\", related_name=\"recipe\", on_delete=models.CASCADE\n    )\n    ingredient = models.ForeignKey(\n        Ingredient,\n        verbose_name=\"Ингредиент\",\n        related_name=\"ingredient_in_recipe\",\n        on_delete=models.CASCADE,\n    )",
+        "peekOfCode": "class IngredientInRecipe(models.Model):\n    recipe = models.ForeignKey(\n        Recipe, verbose_name=\"Рецепт\",\n        related_name=\"recipe\",\n        on_delete=models.CASCADE\n    )\n    ingredient = models.ForeignKey(\n        Ingredient,\n        verbose_name=\"Ингредиент\",\n        related_name=\"ingredient_in_recipe\",",
         "detail": "backend.recipes.models",
         "documentation": {}
     },
@@ -1333,7 +1285,7 @@
         "kind": 6,
         "importPath": "backend.recipes.models",
         "description": "backend.recipes.models",
-        "peekOfCode": "class TagInRecipe(models.Model):\n    recipe = models.ForeignKey(\n        Recipe, verbose_name=\"Рецепт\", related_name=\"recipes\", on_delete=models.CASCADE\n    )\n    tag = models.ForeignKey(\n        Tag, verbose_name=\"Тэг\", related_name=\"tag_in_recipe\", on_delete=models.CASCADE\n    )\n    class Meta:\n        verbose_name = \"Тэг рецепта\"\n        verbose_name_plural = \"Тэги рецепта\"",
+        "peekOfCode": "class TagInRecipe(models.Model):\n    recipe = models.ForeignKey(\n        Recipe,\n        verbose_name=\"Рецепт\",\n        related_name=\"recipes\",\n        on_delete=models.CASCADE\n    )\n    tag = models.ForeignKey(\n        Tag,\n        verbose_name=\"Тэг\",",
         "detail": "backend.recipes.models",
         "documentation": {}
     },

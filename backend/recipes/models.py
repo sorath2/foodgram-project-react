@@ -105,7 +105,9 @@ class Recipe(models.Model):
 
 class IngredientInRecipe(models.Model):
     recipe = models.ForeignKey(
-        Recipe, verbose_name="Рецепт", related_name="recipe", on_delete=models.CASCADE
+        Recipe, verbose_name="Рецепт",
+        related_name="recipe",
+        on_delete=models.CASCADE
     )
     ingredient = models.ForeignKey(
         Ingredient,
@@ -137,10 +139,16 @@ class IngredientInRecipe(models.Model):
 
 class TagInRecipe(models.Model):
     recipe = models.ForeignKey(
-        Recipe, verbose_name="Рецепт", related_name="recipes", on_delete=models.CASCADE
+        Recipe,
+        verbose_name="Рецепт",
+        related_name="recipes",
+        on_delete=models.CASCADE
     )
     tag = models.ForeignKey(
-        Tag, verbose_name="Тэг", related_name="tag_in_recipe", on_delete=models.CASCADE
+        Tag,
+        verbose_name="Тэг",
+        related_name="tag_in_recipe",
+        on_delete=models.CASCADE
     )
 
     class Meta:
