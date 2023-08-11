@@ -288,22 +288,6 @@
         "documentation": {}
     },
     {
-        "label": "get_object_or_404",
-        "importPath": "rest_framework.generics",
-        "description": "rest_framework.generics",
-        "isExtraImport": true,
-        "detail": "rest_framework.generics",
-        "documentation": {}
-    },
-    {
-        "label": "get_object_or_404",
-        "importPath": "rest_framework.generics",
-        "description": "rest_framework.generics",
-        "isExtraImport": true,
-        "detail": "rest_framework.generics",
-        "documentation": {}
-    },
-    {
         "label": "ValidationError",
         "importPath": "rest_framework.exceptions",
         "description": "rest_framework.exceptions",
@@ -478,6 +462,14 @@
         "description": "rest_framework.decorators",
         "isExtraImport": true,
         "detail": "rest_framework.decorators",
+        "documentation": {}
+    },
+    {
+        "label": "get_object_or_404",
+        "importPath": "rest_framework.generics",
+        "description": "rest_framework.generics",
+        "isExtraImport": true,
+        "detail": "rest_framework.generics",
         "documentation": {}
     },
     {
