@@ -20,8 +20,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "colorfield",
     "djoser",
-    "debug_toolbar",
     "api",
     "recipes",
     "users",
@@ -35,7 +35,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "foodgram_backend.urls"
@@ -140,12 +139,3 @@ DJOSER = {
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
-
-
-def show_toolbar(request):
-    return True
-
-
-DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": show_toolbar,
-}

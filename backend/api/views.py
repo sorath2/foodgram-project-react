@@ -56,11 +56,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-    @action(detail=True, methods=["Post", "Delete"], name="favorite")
+    @action(detail=True, methods=["POST", "DELETE"], name="favorite")
     def favorite(self, request, *args, **kwargs):
         """Добавить/удалить рецепт в избранное"""
         recipe_id = self.kwargs.get("pk")
-        recipe = Recipe.objects.get(pk=recipe_id)
+        recipe = get_object_or_404(Recipe, pk=recipe_id)
         if request.method == "POST":
             if Favorite.objects.filter(
                 user=request.user, recipe__id=recipe_id
@@ -79,7 +79,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=True, methods=["Post", "Delete"], name="Shopping_cart")
+    @action(detail=True, methods=["POST", "DELETE"], name="Shopping_cart")
     def shopping_cart(self, request, *args, **kwargs):
         """Добавить/убрать рецепт в корзину"""
         recipe_id = self.kwargs.get("pk")
@@ -102,7 +102,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             instance.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=False, methods=["Get"], name="Download Shopping_cart")
+    @action(detail=False, methods=["GET"], name="Download Shopping_cart")
     def download_shopping_cart(self, request, *args, **kwargs):
         """Скачать файл с ингредиентами рецептов из корзины"""
         user = request.user
@@ -137,6 +137,7 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = (IsAdminOrReadOnly,)
+    pagination_class = None
 
 
 class IngredientViewSet(viewsets.ModelViewSet):
@@ -170,26 +171,21 @@ class UsersViewSet(DjoserUserViewSet):
         )
         return Response(serializer.data)
 
-    @action(detail=True, methods=["Post", "Delete"], name="Subscribe")
+    @action(detail=True, methods=["POST", "DELETE"], name="Subscribe")
     def subscribe(self, request, *args, **kwargs):
         """Подписаться/отписаться от пользователя"""
         subscribed_id = self.kwargs.get("id")
         author = get_object_or_404(User, pk=subscribed_id)
         if request.method == "POST":
-            if author == self.request.user:
-                raise SelfSubscribeError
-            elif Subscribes.objects.filter(
-                author=author, user=request.user
-            ).exists():
-                return Response(
-                    {"errors": "Вы уже подписаны!"},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            Subscribes.objects.create(author=author, user=self.request.user)
             queryset = User.objects.filter(username=author)
             serializer = SubscribesSerializer(
-                queryset, context={"request": request}, many=True
+                queryset, context={"request": request,
+                                   "author": author,
+                                   "user": self.request.user
+                                   }, many=True
             )
+            Subscribes.objects.create(
+                author=author, user=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             instance = get_object_or_404(

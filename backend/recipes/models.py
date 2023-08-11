@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from django.db import models
 
 from users.models import User
@@ -37,12 +38,7 @@ class Tag(models.Model):
         null=False,
         unique=True,
     )
-    color = models.CharField(
-        max_length=7,
-        verbose_name="Цвет тэга",
-        null=True,
-        unique=True,
-    )
+    color = ColorField(default='#FF0000')
     slug = models.CharField(
         max_length=200,
         verbose_name="Описание тэга",
@@ -82,13 +78,11 @@ class Recipe(models.Model):
         Tag,
         through="TagInRecipe",
         verbose_name="Тэги",
-        # related_name='tags',
     )
     ingredients = models.ManyToManyField(
         Ingredient,
         through="IngredientInRecipe",
         verbose_name="Ингредиенты",
-        # related_name='ingredient',
     )
     cooking_time = models.PositiveSmallIntegerField(
         verbose_name="Время приготовления",

@@ -10,7 +10,7 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
-    #  - ./data/ingredients.csv:/var/lib/postgresql/data/ingredients.csv
+      - ./data/ingredients.csv:/var/lib/postgresql/data/ingredients.csv
   backend:
     container_name: backend
     build: ./backend/
