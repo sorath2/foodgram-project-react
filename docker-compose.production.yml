@@ -16,6 +16,7 @@ services:
     container_name: foodgram_backend
     image: s0rath/foodgram_backend
     env_file: .env
+    network_mode: host
     depends_on:
       - db
     volumes:
