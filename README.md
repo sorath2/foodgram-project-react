@@ -36,7 +36,7 @@ sudo docker compose exec <name_web> python manage.py collectstatic --no-input
 - Клонировать репозиторий
 
 - В директории infra файл example.env переименовать в .env и заполнить своими данными,
-согласно шаблону выше.
+согласно шаблону выше. 
 
 - Создать и запустить контейнеры Docker, как указано выше.
 
