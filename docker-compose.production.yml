@@ -3,6 +3,7 @@ volumes:
   pg_data_production:
   static_volume:
   media_volume:
+  redoc:
 services:
   db:
     container_name: postgres_db
@@ -20,15 +21,12 @@ services:
     volumes:
       - static_volume:/app/static/
       - media_volume:/app/media/
+      - redoc:/app/api/docs/
   frontend:
     container_name: foodgram_frontend
     image:
       context: s0rath/foodgram_frontend
-      dockerfile: Dockerfile
-    command: cp -r /app/build/static/. /app/static/
-    volumes:
-      - static_volume:/static
-      - media_volume:/app/media/
+      
   nginx:
     container_name: nginx
     image: nginx:1.22.1
