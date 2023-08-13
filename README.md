@@ -38,7 +38,7 @@ sudo docker compose exec <name_web> python manage.py collectstatic --no-input
 - В директории infra файл example.env переименовать в .env и заполнить своими данными,
 согласно шаблону выше. 
 
-- Создать и запустить контейнеры Docker, как указано выше.
+- Создать и запустить контейнеры Docker, как указано выше. 
 
 ## После запуска проект будут доступен по адресу: http://localhost/
 
