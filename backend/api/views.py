@@ -1,13 +1,11 @@
 from django.db.models import Sum
-from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet as DjoserUserViewSet
 
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.exceptions import APIException
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import SAFE_METHODS, AllowAny, IsAuthenticated
+from rest_framework.permissions import SAFE_METHODS, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
 
@@ -21,6 +19,7 @@ from api.serializers import (
     SubscribesSerializer,
     TagSerializer,
 )
+from api.utils import create_file_shopping_cart
 from recipes.models import (
     Favorite,
     Ingredient,
@@ -30,14 +29,6 @@ from recipes.models import (
     Tag,
 )
 from users.models import Subscribes, User
-
-
-class SelfSubscribeError(APIException):
-    """Ошибка подписки на самого себя."""
-
-    status_code = 400
-    default_detail = "Нельзя подписаться на самого себя."
-    default_code = "bad request"
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -108,7 +99,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
         user = request.user
         if not user.shopping_cart.exists():
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        user_name = f"{user.first_name.title()}_" f"{user.last_name.title()}"
         ingredients = (
             IngredientInRecipe.objects.filter(
                 recipe__shopping_cart__user=user
@@ -116,18 +106,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             .values("ingredient__name", "ingredient__measurement_unit")
             .annotate(amount=Sum("amount"))
         )
-        shopping_list = f"Список покупок для: {user_name}\n\n"
-        shopping_list += "\n".join(
-            [
-                f'- {ingredient["ingredient__name"]} '
-                f'({ingredient["ingredient__measurement_unit"]})'
-                f' - {ingredient["amount"]}'
-                for ingredient in ingredients
-            ]
-        )
-        filename = f"{user.username}_shopping_list.txt"
-        response = HttpResponse(shopping_list, content_type="text/plain")
-        response["Content-Disposition"] = f"attachment; filename={filename}"
+        response = create_file_shopping_cart(user, ingredients)
         return response
 
 
@@ -148,6 +127,7 @@ class IngredientViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend,)
     filterset_class = IngredientFilter
+    pagination_class = None
 
 
 class UsersViewSet(DjoserUserViewSet):
@@ -159,17 +139,19 @@ class UsersViewSet(DjoserUserViewSet):
 
     @action(
         detail=False,
-        methods=["Get"],
+        methods=["GET"],
         permission_classes=[AllowAny],
         name="Subscriptions",
     )
     def subscriptions(self, request):
         """Список пользователей, на которых подписан юзер"""
-        queryset = User.objects.filter(subscribed__user=request.user)
-        serializer = SubscribesSerializer(
-            queryset, context={"request": request}, many=True
+        pages = self.paginate_queryset(
+            User.objects.filter(subscribed__user=request.user)
         )
-        return Response(serializer.data)
+        serializer = SubscribesSerializer(
+            pages, context={"request": request}, many=True
+        )
+        return self.get_paginated_response(serializer.data)
 
     @action(detail=True, methods=["POST", "DELETE"], name="Subscribe")
     def subscribe(self, request, *args, **kwargs):
@@ -182,13 +164,14 @@ class UsersViewSet(DjoserUserViewSet):
                 queryset, context={"request": request,
                                    "author": author,
                                    "user": self.request.user
-                                   }, many=True
+                                   }, data=request.data
             )
-            Subscribes.objects.create(
-                author=author, user=self.request.user)
+            serializer.is_valid(raise_exception=True)
+            Subscribes.objects.create(author=author, user=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             instance = get_object_or_404(
-                Subscribes, author=author, user=request.user)
+                Subscribes, author=author, user=request.user
+            )
             instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

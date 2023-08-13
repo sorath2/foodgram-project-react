@@ -30,8 +30,8 @@ class UsersSerializer(UserSerializer):
     def get_is_subscribed(self, obj):
         """Проверка подписки"""
         user = self.context.get("request").user
-        return False if not Subscribes.objects.filter(
-            user=user, author=obj).exists() or user.is_anonymous else True
+        return not user.is_anonymous and Subscribes.objects.filter(
+            user=user, author=obj).exists()
 
 
 class UsersCreateSerializer(UserSerializer):
@@ -130,15 +130,13 @@ class RecipeReadSerializer(serializers.ModelSerializer):
 
     def get_is_favorited(self, obj):
         user = self.context.get("request").user
-        return False if not user.favorite_user.filter(
-            recipe=obj).exists() or user.is_anonymous else True
+        return not user.is_anonymous and user.favorite_user.filter(
+            recipe=obj).exists()
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context.get("request").user
-        if user.is_anonymous:
-            return False
-        return False if not user.shopping_cart.filter(
-            recipe=obj).exists() or user.is_anonymous else True
+        return not user.is_anonymous and user.shopping_cart.filter(
+            recipe=obj).exists()
 
 
 class RecipeWriteSerializer(serializers.ModelSerializer):
@@ -236,18 +234,20 @@ class SubscribesSerializer(UsersSerializer):
         if self.context.get("request").method == "POST":
             if author == user:
                 raise serializers.ValidationError(
-                    f"Нельзя {user} {author}подписаться на самого себя!",
+                    f"Нельзя подписаться на самого себя!",
                 )
             elif Subscribes.objects.filter(
                 author=author, user=user
             ).exists():
                 raise serializers.ValidationError(
-                    f"{user} {author} Вы уже подписаны!",
+                    f"Вы уже подписаны!",
                 )
         return value
 
     def get_is_subscribed(self, obj):
-        return True
+        user = self.context.get("request").user
+        return not user.is_anonymous and Subscribes.objects.filter(
+            user=user, author=obj).exists()
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()

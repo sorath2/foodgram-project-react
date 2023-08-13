@@ -184,7 +184,7 @@
         "documentation": {}
     },
     {
-        "label": "AllowAny",
+        "label": "IsAuthenticated",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
         "isExtraImport": true,
@@ -192,7 +192,7 @@
         "documentation": {}
     },
     {
-        "label": "IsAuthenticated",
+        "label": "AllowAny",
         "importPath": "rest_framework.permissions",
         "description": "rest_framework.permissions",
         "isExtraImport": true,
@@ -289,14 +289,6 @@
     },
     {
         "label": "ValidationError",
-        "importPath": "rest_framework.exceptions",
-        "description": "rest_framework.exceptions",
-        "isExtraImport": true,
-        "detail": "rest_framework.exceptions",
-        "documentation": {}
-    },
-    {
-        "label": "APIException",
         "importPath": "rest_framework.exceptions",
         "description": "rest_framework.exceptions",
         "isExtraImport": true,
@@ -432,20 +424,20 @@
         "documentation": {}
     },
     {
+        "label": "HttpResponse",
+        "importPath": "django.http",
+        "description": "django.http",
+        "isExtraImport": true,
+        "detail": "django.http",
+        "documentation": {}
+    },
+    {
         "label": "re",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "re",
         "description": "re",
         "detail": "re",
-        "documentation": {}
-    },
-    {
-        "label": "HttpResponse",
-        "importPath": "django.http",
-        "description": "django.http",
-        "isExtraImport": true,
-        "detail": "django.http",
         "documentation": {}
     },
     {
@@ -558,6 +550,14 @@
         "description": "api.serializers",
         "isExtraImport": true,
         "detail": "api.serializers",
+        "documentation": {}
+    },
+    {
+        "label": "create_file_shopping_cart",
+        "importPath": "api.utils",
+        "description": "api.utils",
+        "isExtraImport": true,
+        "detail": "api.utils",
         "documentation": {}
     },
     {
@@ -700,7 +700,7 @@
         "kind": 6,
         "importPath": "backend.api.permissions",
         "description": "backend.api.permissions",
-        "peekOfCode": "class IsAdminOrReadOnly(BasePermission):\n    def has_permission(self, request, view):\n        return request.method in SAFE_METHODS or request.user.is_staff\nclass IsAuthorOrReadOnly(BasePermission):\n    def has_permission(self, request, view):\n        return request.method in SAFE_METHODS or request.user.is_authenticated\n    def has_object_permission(self, request, view, obj):\n        return obj.author == request.user",
+        "peekOfCode": "class IsAdminOrReadOnly(BasePermission):\n    def has_permission(self, request, view):\n        return request.method in SAFE_METHODS or request.user.is_staff\nclass IsAuthorOrReadOnly(BasePermission):\n    def has_permission(self, request, view):\n        return request.method in SAFE_METHODS or request.user.is_authenticated\n    def has_object_permission(self, request, view, obj):\n        return obj.author == request.user\nclass IsAuthor(BasePermission):\n    def has_object_permission(self, request, view, obj):",
         "detail": "backend.api.permissions",
         "documentation": {}
     },
@@ -709,7 +709,16 @@
         "kind": 6,
         "importPath": "backend.api.permissions",
         "description": "backend.api.permissions",
-        "peekOfCode": "class IsAuthorOrReadOnly(BasePermission):\n    def has_permission(self, request, view):\n        return request.method in SAFE_METHODS or request.user.is_authenticated\n    def has_object_permission(self, request, view, obj):\n        return obj.author == request.user",
+        "peekOfCode": "class IsAuthorOrReadOnly(BasePermission):\n    def has_permission(self, request, view):\n        return request.method in SAFE_METHODS or request.user.is_authenticated\n    def has_object_permission(self, request, view, obj):\n        return obj.author == request.user\nclass IsAuthor(BasePermission):\n    def has_object_permission(self, request, view, obj):\n        return obj.author == request.user",
+        "detail": "backend.api.permissions",
+        "documentation": {}
+    },
+    {
+        "label": "IsAuthor",
+        "kind": 6,
+        "importPath": "backend.api.permissions",
+        "description": "backend.api.permissions",
+        "peekOfCode": "class IsAuthor(BasePermission):\n    def has_object_permission(self, request, view, obj):\n        return obj.author == request.user",
         "detail": "backend.api.permissions",
         "documentation": {}
     },
@@ -813,6 +822,15 @@
         "documentation": {}
     },
     {
+        "label": "create_file_shopping_cart",
+        "kind": 2,
+        "importPath": "backend.api.utils",
+        "description": "backend.api.utils",
+        "peekOfCode": "def create_file_shopping_cart(user, ingredients):\n    \"\"\"Создание файла с ингредиентами рецептов из корзины\"\"\"\n    user_name = f\"{user.first_name.title()}_\" f\"{user.last_name.title()}\"\n    shopping_list = f\"Список покупок для: {user_name}\\n\\n\"\n    shopping_list += \"\\n\".join(\n        [\n            f'- {ingredient[\"ingredient__name\"]} '\n            f'({ingredient[\"ingredient__measurement_unit\"]})'\n            f' - {ingredient[\"amount\"]}'\n            for ingredient in ingredients",
+        "detail": "backend.api.utils",
+        "documentation": {}
+    },
+    {
         "label": "validate_username",
         "kind": 2,
         "importPath": "backend.api.validators",
@@ -828,15 +846,6 @@
         "description": "backend.api.validators",
         "peekOfCode": "USERNAME_PATTERN_REGEX = r\"^[\\w.@+-]+\\Z\"\ndef validate_username(value: str) -> str:\n    \"\"\"Валидация поля username согласно шаблону.\"\"\"\n    match = re.fullmatch(USERNAME_PATTERN_REGEX, value)\n    if not match:\n        raise serializers.ValidationError(\n            \"Имя пользователя некорректно.\",\n        )\n    return value",
         "detail": "backend.api.validators",
-        "documentation": {}
-    },
-    {
-        "label": "SelfSubscribeError",
-        "kind": 6,
-        "importPath": "backend.api.views",
-        "description": "backend.api.views",
-        "peekOfCode": "class SelfSubscribeError(APIException):\n    \"\"\"Ошибка подписки на самого себя.\"\"\"\n    status_code = 400\n    default_detail = \"Нельзя подписаться на самого себя.\"\n    default_code = \"bad request\"\nclass RecipeViewSet(viewsets.ModelViewSet):\n    \"\"\"Представление рецепта\"\"\"\n    queryset = Recipe.objects.all()\n    permission_classes = (IsAuthorOrReadOnly | IsAdminOrReadOnly,)\n    filter_backends = (DjangoFilterBackend,)",
-        "detail": "backend.api.views",
         "documentation": {}
     },
     {
@@ -862,7 +871,7 @@
         "kind": 6,
         "importPath": "backend.api.views",
         "description": "backend.api.views",
-        "peekOfCode": "class IngredientViewSet(viewsets.ModelViewSet):\n    \"\"\"Представление ингредиентов\"\"\"\n    queryset = Ingredient.objects.all()\n    serializer_class = IngredientSerializer\n    permission_classes = (IsAdminOrReadOnly,)\n    filter_backends = (DjangoFilterBackend,)\n    filterset_class = IngredientFilter\nclass UsersViewSet(DjoserUserViewSet):\n    \"\"\"Представление пользователей и подписок\"\"\"\n    queryset = User.objects.all()",
+        "peekOfCode": "class IngredientViewSet(viewsets.ModelViewSet):\n    \"\"\"Представление ингредиентов\"\"\"\n    queryset = Ingredient.objects.all()\n    serializer_class = IngredientSerializer\n    permission_classes = (IsAdminOrReadOnly,)\n    filter_backends = (DjangoFilterBackend,)\n    filterset_class = IngredientFilter\n    pagination_class = None\nclass UsersViewSet(DjoserUserViewSet):\n    \"\"\"Представление пользователей и подписок\"\"\"",
         "detail": "backend.api.views",
         "documentation": {}
     },
@@ -871,7 +880,7 @@
         "kind": 6,
         "importPath": "backend.api.views",
         "description": "backend.api.views",
-        "peekOfCode": "class UsersViewSet(DjoserUserViewSet):\n    \"\"\"Представление пользователей и подписок\"\"\"\n    queryset = User.objects.all()\n    serializer_class = SubscribesSerializer\n    permission_classes = (IsAuthenticated,)\n    @action(\n        detail=False,\n        methods=[\"Get\"],\n        permission_classes=[AllowAny],\n        name=\"Subscriptions\",",
+        "peekOfCode": "class UsersViewSet(DjoserUserViewSet):\n    \"\"\"Представление пользователей и подписок\"\"\"\n    queryset = User.objects.all()\n    serializer_class = SubscribesSerializer\n    permission_classes = (IsAuthenticated,)\n    @action(\n        detail=False,\n        methods=[\"GET\"],\n        permission_classes=[AllowAny],\n        name=\"Subscriptions\",",
         "detail": "backend.api.views",
         "documentation": {}
     },
@@ -889,7 +898,7 @@
         "kind": 5,
         "importPath": "backend.foodgram_backend.settings",
         "description": "backend.foodgram_backend.settings",
-        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nSECRET_KEY = \"django-insecure-04dakutiig6wulbmmodkx_oh(+)jkh&rc06hprp@g%$$^=yi3(\"\nDEBUG = True\nALLOWED_HOSTS = [\"localhost\", \"127.0.0.1\"]\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",",
+        "peekOfCode": "BASE_DIR = Path(__file__).resolve().parent.parent\nSECRET_KEY = os.getenv(\"SECRET_KEY\")\nDEBUG = True\nALLOWED_HOSTS = [\"localhost\", \"127.0.0.1\"]\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",",
         "detail": "backend.foodgram_backend.settings",
         "documentation": {}
     },
@@ -898,7 +907,7 @@
         "kind": 5,
         "importPath": "backend.foodgram_backend.settings",
         "description": "backend.foodgram_backend.settings",
-        "peekOfCode": "SECRET_KEY = \"django-insecure-04dakutiig6wulbmmodkx_oh(+)jkh&rc06hprp@g%$$^=yi3(\"\nDEBUG = True\nALLOWED_HOSTS = [\"localhost\", \"127.0.0.1\"]\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",",
+        "peekOfCode": "SECRET_KEY = os.getenv(\"SECRET_KEY\")\nDEBUG = True\nALLOWED_HOSTS = [\"localhost\", \"127.0.0.1\"]\nINSTALLED_APPS = [\n    \"django.contrib.admin\",\n    \"django.contrib.auth\",\n    \"django.contrib.contenttypes\",\n    \"django.contrib.sessions\",\n    \"django.contrib.messages\",\n    \"django.contrib.staticfiles\",",
         "detail": "backend.foodgram_backend.settings",
         "documentation": {}
     },
