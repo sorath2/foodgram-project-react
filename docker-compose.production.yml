@@ -16,7 +16,6 @@ services:
     
     image: s0rath/foodgram_backend
     env_file: .env
-    network_mode: host
     restart: always
     depends_on:
       - db
