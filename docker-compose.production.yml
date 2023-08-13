@@ -21,7 +21,7 @@ services:
       - static_volume:/app/static/
       - media_volume:/app/media/
   frontend:
-    container_name: frontend
+    container_name: foodgram_frontend
     image:
       context: s0rath/foodgram_frontend
       dockerfile: Dockerfile
