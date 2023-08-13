@@ -234,13 +234,13 @@ class SubscribesSerializer(UsersSerializer):
         if self.context.get("request").method == "POST":
             if author == user:
                 raise serializers.ValidationError(
-                    f"Нельзя подписаться на самого себя!",
+                    "Нельзя подписаться на самого себя!",
                 )
             elif Subscribes.objects.filter(
                 author=author, user=user
             ).exists():
                 raise serializers.ValidationError(
-                    f"Вы уже подписаны!",
+                    "Вы уже подписаны!",
                 )
         return value
 
