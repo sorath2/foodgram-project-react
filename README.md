@@ -40,7 +40,7 @@ sudo docker compose exec <name_web> python manage.py collectstatic --no-input
 
 - Создать и запустить контейнеры Docker, как указано выше. 
 
-## После запуска проект будут доступен по адресу: http://localhost/
+## После запуска проект будут доступен по адресу: http://localhost/ 
 
 ## Документация к API доступна здесь http://localhost/api/docs/
 
