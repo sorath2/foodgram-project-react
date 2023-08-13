@@ -15,7 +15,12 @@ services:
   backend:
     container_name: foodgram_backend
     image: s0rath/foodgram_backend
-    env_file: .env
+    environment:
+      POSTGRES_USER=django_user
+      POSTGRES_PASSWORD=mysecretpassword
+      POSTGRES_DB=django
+      DB_HOST=db
+      DB_PORT=5432
     network_mode: host
     restart: always
     depends_on:
