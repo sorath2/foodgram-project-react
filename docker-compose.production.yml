@@ -21,6 +21,7 @@ services:
       - POSTGRES_DB=django
       - DB_HOST=db
       - DB_PORT=5432
+      - SECRET_KEY='django-insecure-04dakutiig6wulbmmodkx_oh(+)jkh&rc06hprp@g%$$^=yi3('
     network_mode: host
     restart: always
     depends_on:
