@@ -24,8 +24,7 @@ services:
       - redoc:/app/api/docs/
   frontend:
     container_name: foodgram_frontend
-    image:
-      context: s0rath/foodgram_frontend
+    image: s0rath/foodgram_frontend
       
   nginx:
     container_name: nginx
