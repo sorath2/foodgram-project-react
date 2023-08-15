@@ -39,6 +39,7 @@ services:
     env_file: .env
     ports:
       - 9000:80
+      - 443:443
     depends_on:
      - backend
     volumes:
