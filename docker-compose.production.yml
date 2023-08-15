@@ -29,8 +29,9 @@ services:
     
     image: s0rath/foodgram_frontend
     env_file: .env
+    command: cp -r /app/build/static/. /app/static/
     volumes:
-      - static_volume:/frontend_static
+      - static_volume:/app/static/
       - media_volume:/app/media/     
   nginx:
     
