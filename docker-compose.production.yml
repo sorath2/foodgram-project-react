@@ -31,6 +31,7 @@ services:
     env_file: .env
     command: cp -r /app/build/static/. /frontend_static/
     volumes:
+      - ./frontend/:/app/result_build/
       - static_volume:/frontend_static
       - media_volume:/app/media/     
   nginx:
