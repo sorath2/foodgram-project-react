@@ -6,4 +6,4 @@ RUN npm install
 COPY . ./
 RUN npm run build
 #CMD ["npx", "-y", "http-server", "-p", "9000", "/app/build"]
-CMD cp -r build /app/static
+CMD cp -r build /app/static 
