@@ -8,12 +8,10 @@ services:
   db:
     
     image: postgres:13.10
-    # environment:
-    #   PGDATA: /var/lib/postgresql/data
     env_file: .env
     volumes:
       - pg_data_production:/var/lib/postgresql/data
-      #- ./data/ingredients.csv:/var/lib/postgresql/data/ingredients.csv
+      - ./data/ingredients.csv:/var/lib/postgresql/data/ingredients.csv
   backend:
     
     image: s0rath/foodgram_backend
