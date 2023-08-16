@@ -29,7 +29,7 @@ services:
     
     image: s0rath/foodgram_frontend
     env_file: .env
-    command: cp -r /app/build/static/. /app/static/
+    command: cp -r /app/build/static/. /frontend_static/
     volumes:
       - static_volume:/frontend_static
       - media_volume:/app/media/     
