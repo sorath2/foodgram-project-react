@@ -12,7 +12,7 @@ services:
     #   - POSTGRES_HOST_AUTH_METHOD=trust
     env_file: .env
     volumes:
-      - pg_data_production:/var/lib/postgresql/data
+      - pg_data_production:/var/lib/postgresql/data/foodgram
 #      - ./data/ingredients.csv:/var/lib/postgresql/data/ingredients.csv
    
   backend:
