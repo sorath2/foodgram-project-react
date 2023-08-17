@@ -9,6 +9,8 @@ services:
   db:
     image: postgres:13.4-alpine 
     env_file: .env
+    networks:
+      - foodgram
     volumes:
       - pg_data_production:/var/lib/postgresql/data
       - ./data/ingredients.csv:/var/lib/postgresql/data/ingredients.csv
@@ -17,6 +19,8 @@ services:
     image: s0rath/foodgram_backend
     env_file: .env
     restart: always
+    networks:
+      - foodgram
     depends_on:
       - db
     volumes:
@@ -27,6 +31,8 @@ services:
   frontend:
     image: s0rath/foodgram_frontend
     env_file: .env
+    networks:
+      - foodgram
     command: cp -r /app/build/. /frontend_static/
     volumes:
       - ./frontend/:/app/
@@ -36,6 +42,8 @@ services:
   nginx:
     image: s0rath/foodgram_gateway
     restart: always 
+    networks:
+      - foodgram
     env_file: .env
     ports:
       - 9000:80
