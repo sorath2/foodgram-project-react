@@ -38,7 +38,7 @@ services:
       - media_volume:/app/media/
   
   nginx:
-    image: s0rath/foodgram_gateway
+    image: s0rath/foodgram_gateway 
     restart: always 
     env_file: .env
     ports:
