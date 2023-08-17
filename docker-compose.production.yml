@@ -28,7 +28,7 @@ services:
       - media_volume:/app/media/
       - redoc:/app/api/docs/
     links:
-      - postgres  
+      - db  
    
   frontend:
     image: s0rath/foodgram_frontend
