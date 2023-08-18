@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["158.160.22.175",
                  "foodgramx.ddns.net", "127.0.0.1", "localhost"]
