@@ -53,13 +53,13 @@ Python, Django Rest Framework, PostgreSQL, gunicorn, nginx, Docker
 Email
 
 ## Шаблон наполнения env-файла
-DB_ENGINE=django.db.backends.postgresql
-DB_NAME=postgres
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=пароль для подключения к БД
-DB_HOST=db
-DB_PORT=5432
-SECRET_KEY = 'ключ django проекта. файл settings.py'
+ - DB_ENGINE=django.db.backends.postgresql
+ - DB_NAME=postgres
+ - POSTGRES_USER=postgres
+ - POSTGRES_PASSWORD=пароль для подключения к БД
+ - DB_HOST=db
+ - DB_PORT=5432
+ - SECRET_KEY = 'ключ django проекта. файл settings.py'
 
 ## Запуск проекта на Docker-Compose
 - Перед запуском у вас должен быть установлен Docker, Docker-Compose
@@ -88,6 +88,11 @@ sudo docker compose exec <name_web> python manage.py collectstatic --no-input
 ## Ссылки
    Проект доступен по следующей ссылке: https://foodgramx.ddns.net
 
-## Документация к API доступна здесь http://localhost/api/docs/
+## Документация
+   Документация к API доступна здесь http://foodgramx.ddns.net/api/docs/
 
 В документации описаны возможные запросы к API и структура ожидаемых ответов. Для каждого запроса указаны уровни прав доступа.
+
+Логин/пароль для авторизации в админке/приложении:
+log: admin
+pass: adminadmin
