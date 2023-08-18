@@ -30,8 +30,8 @@ class UsersSerializer(UserSerializer):
     def get_is_subscribed(self, obj):
         """Проверка подписки"""
         user = self.context.get("request").user
-        return not user.is_anonymous and Subscribes.objects.first().get(
-            user=user, author=obj).exists()
+        return not user.is_anonymous and Subscribes.objects.filter(
+            user=user, author=obj).first().exists()
 
 
 class UsersCreateSerializer(UserSerializer):
@@ -246,8 +246,8 @@ class SubscribesSerializer(UsersSerializer):
 
     def get_is_subscribed(self, obj):
         user = self.context.get("request").user
-        return not user.is_anonymous and Subscribes.objects.first().filter(
-            user=user, author=obj).exists()
+        return not user.is_anonymous and Subscribes.objects.filter(
+            user=user, author=obj).first().exists()
 
     def get_recipes_count(self, obj):
         return obj.recipes.count()
