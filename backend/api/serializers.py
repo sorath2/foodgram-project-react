@@ -200,6 +200,14 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         context = {"request": request}
         return RecipeReadSerializer(instance, context=context).data
 
+    def validate_cooking_time(self, value):
+        time = value
+        if time == 0:
+            raise serializers.ValidationError(
+                "Время приготовления должно быть больше 0!",
+            )
+        return value
+
 
 class SubscribesSerializer(UsersSerializer):
     """Сериализация подписок"""
