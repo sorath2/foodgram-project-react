@@ -140,7 +140,7 @@ class UsersViewSet(DjoserUserViewSet):
     @action(
         detail=False,
         methods=["GET"],
-        permission_classes=[AllowAny],
+        permission_classes=[IsAuthenticated],
         name="Subscriptions",
     )
     def subscriptions(self, request):
@@ -159,15 +159,15 @@ class UsersViewSet(DjoserUserViewSet):
         subscribed_id = self.kwargs.get("id")
         author = get_object_or_404(User, pk=subscribed_id)
         if request.method == "POST":
-            queryset = User.objects.filter(username=author)
             serializer = SubscribesSerializer(
-                queryset, context={"request": request,
-                                   "author": author,
-                                   "user": self.request.user
-                                   }, data=request.data
+                author, context={"request": request,
+                                 "author": author,
+                                 "user": self.request.user
+                                 }, data=request.data
             )
-            serializer.is_valid(raise_exception=True)
-            Subscribes.objects.create(author=author, user=self.request.user)
+            if serializer.is_valid(raise_exception=True):
+                Subscribes.objects.create(
+                    author=author, user=self.request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             instance = get_object_or_404(

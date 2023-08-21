@@ -217,10 +217,8 @@ class SubscribesSerializer(UsersSerializer):
     recipes = serializers.SerializerMethodField()
     email = serializers.EmailField(default=serializers.CurrentUserDefault())
     username = serializers.SlugField(default=serializers.CurrentUserDefault())
-    first_name = serializers.SlugField(
-        default=serializers.CurrentUserDefault())
-    last_name = serializers.SlugField(
-        default=serializers.CurrentUserDefault())
+    first_name = serializers.SlugField(required=False)
+    last_name = serializers.SlugField(required=False)
 
     class Meta:
         model = User
