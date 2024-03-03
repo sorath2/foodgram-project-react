@@ -94,5 +94,9 @@ sudo docker compose exec <name_web> python manage.py collectstatic --no-input
 В документации описаны возможные запросы к API и структура ожидаемых ответов. Для каждого запроса указаны уровни прав доступа.
 
 Логин/пароль для авторизации в админке/приложении:
-log: admin
-pass: adminadmin
+- log: admin
+- pass: adminadmin
+
+## Автор
+- Автор проета - Тихомиров Алексей
+- Telegram: @tav_ajax
